@@ -79,10 +79,10 @@ public class Main {
             String maaraasemaPlus = maaraasema + " asema";
             String maaraasemaLyhyt;
 
-            if (pitkanimiLyhytnimi.get(annettuMaaraasema) == null) {
+            if (pitkanimiLyhytnimi.get(maaraasema) == null) {
                 maaraasemaLyhyt = pitkanimiLyhytnimi.get(maaraasemaPlus);
             } else {
-                maaraasemaLyhyt = pitkanimiLyhytnimi.get(annettuMaaraasema);
+                maaraasemaLyhyt = pitkanimiLyhytnimi.get(maaraasema);
             }
 
          /* Käyttäjän syötteenä saaduista lähtö- ja määräasemasta ja niistä hashmäpistä haetuista vastaavista lyhytkoodeista konkatenoidaan url, jolla haetaan lähtö-
