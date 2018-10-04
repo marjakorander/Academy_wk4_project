@@ -22,28 +22,28 @@ public class Main {
         try {
             Scanner lukija = new Scanner(System.in);
             System.out.println("Anna lähtöasema (esim. Helsinki): ");
-            String departureStation = (lukija.nextLine());
-            String departureStationPlus = departureStation + " asema";
-            String departureShort;
+            String lahtoasema = (lukija.nextLine());
+            String lahtoasemaPlus = lahtoasema + " asema";
+            String lahtoasemaLyhyt;
 
-            if (pitkanimiLyhytnimi.get(departureStation) == null) {
-                departureShort = pitkanimiLyhytnimi.get(departureStationPlus);
+            if (pitkanimiLyhytnimi.get(lahtoasema) == null) {
+                lahtoasemaLyhyt = pitkanimiLyhytnimi.get(lahtoasemaPlus);
             } else {
-                departureShort = pitkanimiLyhytnimi.get(departureStationPlus);
+                lahtoasemaLyhyt = pitkanimiLyhytnimi.get(lahtoasemaPlus);
             }
 
             System.out.println("Anna määränpää (esim. Lahti): ");
-            String destinationStation = (lukija.nextLine());
-            String destinationStationPlus = destinationStation + " asema";
-            String destinationShort;
+            String maaraasema = (lukija.nextLine());
+            String maaraasemaPlus = maaraasema + " asema";
+            String maaraasemaLyhyt;
 
-            if (pitkanimiLyhytnimi.get(destinationStation) == null) {
-                destinationShort = pitkanimiLyhytnimi.get(destinationStationPlus);
+            if (pitkanimiLyhytnimi.get(maaraasema) == null) {
+                maaraasemaLyhyt = pitkanimiLyhytnimi.get(maaraasemaPlus);
             } else {
-                destinationShort = pitkanimiLyhytnimi.get(destinationStationPlus);
+                maaraasemaLyhyt = pitkanimiLyhytnimi.get(maaraasemaPlus);
             }
 
-            URL url = new URL(URI.create(String.format("%s/live-trains/station/" + departureShort + "/" + destinationShort, baseurl)).toASCIIString());
+            URL url = new URL(URI.create(String.format("%s/live-trains/station/" + lahtoasemaLyhyt + "/" + maaraasemaLyhyt, baseurl)).toASCIIString());
             ObjectMapper mapper = new ObjectMapper();
             CollectionType tarkempiListanTyyppi = mapper.getTypeFactory().constructCollectionType(ArrayList.class, Juna.class);
             List<Juna> junat = mapper.readValue(url, tarkempiListanTyyppi);  // pelkkä List.class ei riitä tyypiksi
@@ -54,16 +54,16 @@ public class Main {
                 sb.append("Juna " + junanTyyppi);
                 sb.append(junanNumero);
                 for (TimeTableRow ttr : j.timeTableRows) {
-                    if (ttr.getStationShortCode().equals(departureShort) && ttr.getType().equals("DEPARTURE")) {
+                    if (ttr.getStationShortCode().equals(lahtoasemaLyhyt) && ttr.getType().equals("DEPARTURE")) {
                         sb.append(" lähtee asemalta ")
-                                .append(departureStation)
+                                .append(lahtoasema)
                                 .append(": ")
                                 .append(ttr.getScheduledTime())
                                 .append("\n");
                     }
-                    if (ttr.getStationShortCode().equals(destinationShort) && ttr.getType().equals("ARRIVAL")) {
+                    if (ttr.getStationShortCode().equals(maaraasemaLyhyt) && ttr.getType().equals("ARRIVAL")) {
                         sb.append("Juna saapuu asemalle ")
-                                .append(destinationStation)
+                                .append(maaraasema)
                                 .append(": ")
                                 .append(ttr.getScheduledTime())
                                 .append("\n \n");
@@ -88,10 +88,10 @@ public class Main {
 
             for (int i = 0; i < assat.size(); i++) {
                 if (assat.get(i).isPassengerTraffic()) {
-                    String longName = assat.get(i).getStationName();
-                    String shortName = assat.get(i).getStationShortCode();
-                    pitkanimiLyhytnimi.put(longName, shortName);
-                    lyhytnimiPitkanimi.put(shortName, longName);
+                    String pitkaNimi = assat.get(i).getStationName();
+                    String lyhytNimi = assat.get(i).getStationShortCode();
+                    pitkanimiLyhytnimi.put(pitkaNimi, lyhytNimi);
+                    lyhytnimiPitkanimi.put(lyhytNimi, pitkaNimi);
                 }
             }
         } catch (Exception ex) {

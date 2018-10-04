@@ -17,6 +17,7 @@ public class Asema {
         public String getStationName() {
             return stationName;
         }
+
         @Override
         public String toString() {
             return stationName + ", " + stationShortCode;

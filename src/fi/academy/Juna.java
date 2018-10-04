@@ -4,7 +4,6 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Juna {
-        //LocalDate departureDate;  // Jackson ei oikein pidä Java 8 päivistä oletuksena
         List<TimeTableRow> timeTableRows;
         String trainType;
         String trainNumber;
