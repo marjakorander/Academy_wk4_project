@@ -1,0 +1,32 @@
+package fi.academy;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class TimeTableRow {
+        Date scheduledTime;
+        String stationShortCode;
+        String type;
+
+        public String getStationShortCode() {
+            return stationShortCode;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getScheduledTime() {
+            return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, new Locale("FI", "fi")).format(scheduledTime);
+        }
+
+        @Override
+        public String toString() {
+            return "Arrival time to " + getStationShortCode() + ": " + getScheduledTime();
+        }
+}
+
