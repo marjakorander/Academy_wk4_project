@@ -1,7 +1,7 @@
+// PINJA teki suomalaisen päivämäärä- ja aikamuotoilun
+
 package fi.academy;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -26,7 +26,7 @@ public class TimeTableRow {
 
         @Override
         public String toString() {
-            return "Arrival time to " + getStationShortCode() + ": " + getScheduledTime();
+            return "Lähtöasema " + getStationShortCode() + ": " + getScheduledTime();
         }
 }
 

@@ -17,9 +17,7 @@ public class Juna {
         public String getTrainType() {
             return trainType;
         }
-        public String getTrainNumber() {
-            return trainNumber;
-        }
+        public String getTrainNumber() { return trainNumber; }
         public List<Asema> getAssat() {
             return assat;
         }

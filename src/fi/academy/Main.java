@@ -7,7 +7,8 @@ import java.util.*;
 
 public class Main {
 
-    //esitellään hashmapit, jotta niitä voi käsitellä kaikkialta main-luokasta
+//  esitellään hashmapit, jotta niitä voi käsitellä kaikkialta main-luokasta
+
     static HashMap<String, String> pitkanimiLyhytnimi = new HashMap<>();
     static HashMap<String, String> lyhytnimiPitkanimi = new HashMap<>();
 
@@ -26,7 +27,11 @@ public class Main {
         lueJunanJSONData();
     }
 
-    //rakennetaan hashmapit
+/*
+Alla rakennetaan kaksi hashmappia, joissa tieto asemista:
+1. koko nimi - lyhyt koodi,
+2. lyhyt koodi - koko nimi).
+*/
 
     public static void lueAsemanJSONData() {
         String baseurl = "https://rata.digitraffic.fi/api/v1";
@@ -50,12 +55,11 @@ public class Main {
         }
     }
 
-    /*
-    Alla olevassa metodissa kysytään käyttäjältä lähto- ja määräasema.
-    VR:n avoimessa datassa käytetään sekä asemien pitkiä nimiä (kuten Helsinki asema tai Lahti) ja lyhytkoodeja (kuten HKI).
-    Tämän vuoksi teimme kaksi hashmappiä, joilla voimme hakea tietoja näistä hashmapeista.
-
-    */
+/*
+Alla olevassa metodissa kysytään käyttäjältä lähto- ja määräasema.
+VR:n avoimessa datassa käytetään sekä asemien pitkiä nimiä (kuten Helsinki asema tai Lahti) ja lyhytkoodeja (kuten HKI).
+Näitä tietoja voidaan hakea hashmapeista.
+*/
 
     public static void lueJunanJSONData() {
         String baseurl = "https://rata.digitraffic.fi/api/v1";
@@ -85,10 +89,10 @@ public class Main {
                 maaraasemaLyhyt = pitkanimiLyhytnimi.get(maaraasema);
             }
 
-         /* Käyttäjän syötteenä saaduista lähtö- ja määräasemasta ja niistä hashmäpistä haetuista vastaavista lyhytkoodeista konkatenoidaan url, jolla haetaan lähtö-
-            ja määräaseman välinen matka.
-            Valmistellaan printti printtaaTiedot-metodilla.
-         */
+/*  Käyttäjän syötteenä saaduista lähtö- ja määräasemasta ja niistä hashmapistä haetuista vastaavista lyhytkoodeista konkatenoidaan
+    url, jolla haetaan lähtö- ja määräaseman välinen matka.
+    Valmistellaan printti printtaaTiedot-metodilla.
+*/
 
             URL url = new URL(URI.create(String.format("%s/live-trains/station/" + lahtoasemaLyhyt + "/" + maaraasemaLyhyt, baseurl)).toASCIIString());
             ObjectMapper mapper = new ObjectMapper();
@@ -102,7 +106,7 @@ public class Main {
         }
     }
 
-    // alla haetaan tieto matkasta
+// alla haetaan tieto matkasta ja luodaan Stringbuilderilla teksti, joka printataan käyttäjälle
 
     public static StringBuilder printtaaTiedot(String lahtoasema, String lahtoasemaLyhyt, String maaraasema, String maaraasemaLyhyt, List<Juna> junat) {
         StringBuilder sb = new StringBuilder();
