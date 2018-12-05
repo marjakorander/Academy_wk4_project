@@ -23,6 +23,12 @@ public class TimeTableRow {
         public String getScheduledTime() {
             return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, new Locale("FI", "fi")).format(scheduledTime);
         }
+        public Date getScheduledTimeDate() {
+            return scheduledTime;
+        }
+//        public Date getScheduledTime() {
+//            return scheduledTime;
+//        }
 
         @Override
         public String toString() {

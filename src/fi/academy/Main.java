@@ -1,9 +1,12 @@
 package fi.academy;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import java.net.URI;
 import java.net.URL;
 import java.util.*;
+
+// JUNAHAKU
 
 public class Main {
 
@@ -67,7 +70,7 @@ Näitä tietoja voidaan hakea hashmapeista.
             Scanner lukija = new Scanner(System.in);
             System.out.println("Anna lähtöasema (esim. Helsinki): ");
             String annettuLahtoasema = (lukija.nextLine().toLowerCase());
-            String lahtoasema = annettuLahtoasema.substring(0,1).toUpperCase() + annettuLahtoasema.substring(1);
+            String lahtoasema = annettuLahtoasema.substring(0, 1).toUpperCase() + annettuLahtoasema.substring(1);
             String lahtoasemaPlus = lahtoasema + " asema";
             String lahtoasemaLyhyt;
 
@@ -79,7 +82,7 @@ Näitä tietoja voidaan hakea hashmapeista.
 
             System.out.println("Anna määränpää (esim. Lahti): ");
             String annettuMaaraasema = (lukija.nextLine().toLowerCase());
-            String maaraasema = annettuMaaraasema.substring(0,1).toUpperCase() + annettuMaaraasema.substring(1);
+            String maaraasema = annettuMaaraasema.substring(0, 1).toUpperCase() + annettuMaaraasema.substring(1);
             String maaraasemaPlus = maaraasema + " asema";
             String maaraasemaLyhyt;
 
@@ -100,16 +103,21 @@ Näitä tietoja voidaan hakea hashmapeista.
             List<Juna> junat = mapper.readValue(url, tarkempiListanTyyppi);
             StringBuilder sb = printtaaTiedot(lahtoasema, lahtoasemaLyhyt, maaraasema, maaraasemaLyhyt, junat);
             System.out.println(sb);
-
+//            StringBuilder sbu = matkanKesto(lahtoasemaLyhyt, maaraasemaLyhyt, junat);
+//            System.out.println(sbu);
         } catch (Exception ex) {
             System.out.println("Tapahtui VIRHE!");
         }
     }
 
-// alla haetaan tieto matkasta ja luodaan Stringbuilderilla teksti, joka printataan käyttäjälle
+// alla haetaan tieto neljän seuraavan lähtevän junan tieto ja matkan kesto.
+// Luodaan Stringbuilderilla teksti, joka printataan konsoliin.
 
     public static StringBuilder printtaaTiedot(String lahtoasema, String lahtoasemaLyhyt, String maaraasema, String maaraasemaLyhyt, List<Juna> junat) {
         StringBuilder sb = new StringBuilder();
+        Date lahto = null;
+        Date saapuminen = null;
+        String kesto = null;
         for (Juna j : junat) {
             String junanTyyppi = j.getTrainType();
             String junanNumero = j.getTrainNumber();
@@ -117,6 +125,7 @@ Näitä tietoja voidaan hakea hashmapeista.
             sb.append(junanNumero);
             for (TimeTableRow ttr : j.timeTableRows) {
                 if (ttr.getStationShortCode().equals(lahtoasemaLyhyt) && ttr.getType().equals("DEPARTURE")) {
+                    lahto = ttr.getScheduledTimeDate();
                     sb.append(" lähtee asemalta ")
                             .append(lahtoasema)
                             .append(": ")
@@ -124,15 +133,41 @@ Näitä tietoja voidaan hakea hashmapeista.
                             .append("\n");
                 }
                 if (ttr.getStationShortCode().equals(maaraasemaLyhyt) && ttr.getType().equals("ARRIVAL")) {
+                    saapuminen = ttr.getScheduledTimeDate();
+                    kesto = laskeAika(lahto, saapuminen);
                     sb.append("Juna saapuu asemalle ")
                             .append(maaraasema)
                             .append(": ")
                             .append(ttr.getScheduledTime())
-                            .append("\n \n");
+                            .append("\n")
+                            .append(kesto)
+                            .append("\n\n");
                 }
             }
         }
         return sb;
+    }
+
+    public static String laskeAika(Date lahto, Date saapuminen) {
+
+        //milliseconds
+        long different = saapuminen.getTime() - lahto.getTime();
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        long elapsedSeconds = different / secondsInMilli;
+
+        String matkanPituus = elapsedHours + " tuntia, " + elapsedMinutes + " minuuttia. \n";
+
+        return matkanPituus;
     }
 }
 
